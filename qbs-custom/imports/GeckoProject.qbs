@@ -21,9 +21,10 @@ Project {
     property bool emdrvHaveRtcdrv: true
     property bool emdrvHaveSleep: true
     property bool emdrvHaveSpidrv: true
-    property bool emdrvHaveTempdrv: true
+    property bool emdrvHaveTempdrv: false
     property bool emdrvHaveUartdrv: true
     property bool emdrvHaveUstimer: true
+    property bool emdrvHaveEzradiodrv: false
     property bool emdrvHaveDmadrvDefaultConfig: true
     property bool emdrvHaveNvmDefaultConfig: true
     property bool emdrvHaveRtcdrvDefaultConfig: true
@@ -31,6 +32,11 @@ Project {
     property bool emdrvHaveTempdrvDefaultConfig: true
     property bool emdrvHaveUartdrvDefaultConfig: true
     property bool emdrvHaveUstimerDefaultConfig: true
+    property bool emdrvHaveEzradiodrvDefaultConfig: true
 
+    property bool emdrvEzradiodrvHavePlugins: false
+    property bool emdrvEzradiodrvFullSupport: true
+    property string emdrvEzradiodrvRadioType: "4467"
+    property variant emdrvEzradiodrvRadioInfo: GeckoDeviceInfo.parseRadioType(emdrvEzradiodrvRadioType)
 }
 

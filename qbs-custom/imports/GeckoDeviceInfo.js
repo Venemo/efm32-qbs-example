@@ -64,3 +64,36 @@ function parse(deviceName) {
     };
 }
 
+function parseRadioType(radio) {
+    if (typeof(radio) === "undefined") {
+        return undefined;
+    }
+
+    if (typeof(radio) !== "string" || radio.length !== 4) {
+        throw new Error("Invalid radio type specified. Should be like 4455, 4467, etc.");
+    }
+
+    var commonInc;
+    var deviceInc;
+
+    if (radio.startsWith("445")) {
+        commonInc = "4x55";
+        deviceInc = "4455";
+    }
+    else if (radio.startsWith("446")) {
+        commonInc = "4x6x";
+        if (radio.endsWith("7") || radio.endsWith("8"))
+            deviceInc = "4468";
+        else
+            deviceInc = "4460";
+    }
+    else {
+        throw new Error("Unknown radio type. Should be like 4455, 4467, etc.");
+    }
+
+    return {
+        commonInc: commonInc,
+        deviceInc: deviceInc
+    };
+}
+

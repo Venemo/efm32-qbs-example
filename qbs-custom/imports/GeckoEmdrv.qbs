@@ -67,6 +67,18 @@ ArmMcuProduct {
                 arr.push(emdrvLocation + "/ustimer/config");
             }
         }
+        if (emdrvHaveEzradiodrv) {
+            arr.push(emdrvLocation + "/ezradiodrv/common/inc");
+            arr.push(emdrvLocation + "/ezradiodrv/common/inc/si" + emdrvEzradiodrvRadioInfo.commonInc);
+            arr.push(emdrvLocation + "/ezradiodrv/si" + emdrvEzradiodrvRadioInfo.deviceInc + "/inc");
+
+            if (emdrvEzradiodrvHavePlugins) {
+                arr.push(emdrvLocation + "/ezradiodrv/plugins/inc");
+            }
+            if (emdrvHaveEzradiodrvDefaultConfig) {
+                arr.push(emdrvLocation + "/ezradiodrv/config");
+            }
+        }
 
         return arr;
     }
@@ -116,6 +128,32 @@ ArmMcuProduct {
             arr.push(emdrvLocation + "/ustimer/*/*.h");
             arr.push(emdrvLocation + "/ustimer/src/*.c");
         }
+        if (emdrvHaveEzradiodrv) {
+            arr.push(emdrvLocation + "/ezradiodrv/common/inc/*.h");
+            arr.push(emdrvLocation + "/ezradiodrv/common/src/*.c");
+            arr.push(emdrvLocation + "/ezradiodrv/common/inc/si" + emdrvEzradiodrvRadioInfo.commonInc + "/*.h");
+            arr.push(emdrvLocation + "/ezradiodrv/common/src/si" + emdrvEzradiodrvRadioInfo.commonInc + "/*.c");
+            arr.push(emdrvLocation + "/ezradiodrv/si" + emdrvEzradiodrvRadioInfo.deviceInc + "/inc/*.h");
+
+            if (emdrvEzradiodrvHavePlugins) {
+                arr.push(emdrvLocation + "/ezradiodrv/plugins/inc/*.h");
+                arr.push(emdrvLocation + "/ezradiodrv/plugins/src/*.c");
+            }
+            if (emdrvHaveEzradiodrvDefaultConfig) {
+                arr.push(emdrvLocation + "/ezradiodrv/config/*.h");
+            }
+        }
+
+        return arr;
+    }
+
+    property stringList emdrvDefines: {
+        var arr = [];
+
+        if (emdrvEzradiodrvFullSupport) {
+            arr.push("EZRADIO_DRIVER_EXTENDED_SUPPORT");
+            arr.push("EZRADIO_DRIVER_FULL_SUPPORT");
+        }
 
         return arr;
     }
@@ -123,9 +161,11 @@ ArmMcuProduct {
     Export {
         Depends { name: "cpp" }
         cpp.includePaths: product.emdrvIncludePaths
+        cpp.defines: product.emdrvDefines
     }
 
     cpp.includePaths: emdrvIncludePaths
+    cpp.defines: emdrvDefines
     files: emdrvFiles
 
 }
