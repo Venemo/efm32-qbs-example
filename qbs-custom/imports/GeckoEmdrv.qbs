@@ -13,6 +13,32 @@ ArmMcuProduct {
 
     property path emdrvLocation: geckoSdkPlatformPath + "/emdrv"
 
+    property variant dmadrvDmaIrqPriority: undefined
+    property variant dmadrvDmaChPriority: undefined
+    property variant dmadrvDmaChCount: undefined
+    property variant dmadrvUseNativeApi: undefined
+
+    property variant ezradiodrvCommCtsRetry: undefined
+    property variant ezradiodrvCommUseGpio1ForCts: undefined
+    property variant ezradiodrvDisablePti: undefined
+    property variant ezradiodrvSpi4WireMode: undefined
+
+    property variant rtcdrvNumTimers: undefined
+    property variant rtcdrvWallclockConfig: undefined
+    property variant rtcdrvSleepdrvIntegration: undefined
+    property variant rtcdrvUseLfRco: undefined
+
+    property variant spidrvIncludeSlave: undefined
+
+    property variant uartdrvMaxConcurrentTxBufs: undefined
+    property variant uartdrvMaxConcurrentRxBufs: undefined
+    property variant uartdrvFlowControlEnable: undefined
+    property variant uartdrvMaxDriverInstances: undefined
+    property variant uartdrvFcSwXon: undefined
+    property variant uartdrvFcSwXoff: undefined
+
+    property variant ustimerTimer: undefined
+
     property pathList emdrvIncludePaths: {
         var arr = [];
 
@@ -147,13 +173,44 @@ ArmMcuProduct {
         return arr;
     }
 
+
+
     property stringList emdrvDefines: {
         var arr = [];
 
-        if (emdrvEzradiodrvFullSupport) {
-            arr.push("EZRADIO_DRIVER_EXTENDED_SUPPORT");
-            arr.push("EZRADIO_DRIVER_FULL_SUPPORT");
+        var addDefine = function (cond, prop, define) {
+            if (cond && (typeof(prop) !== "undefined")) {
+                arr.push(define + "=" + String(prop));
+            }
         }
+
+        addDefine(emdrvHaveDmadrv, dmadrvDmaIrqPriority, "EMDRV_DMADRV_DMA_IRQ_PRIORITY");
+        addDefine(emdrvHaveDmadrv, dmadrvDmaChPriority, "EMDRV_DMADRV_DMA_CH_PRIORITY");
+        addDefine(emdrvHaveDmadrv, dmadrvDmaChCount, "EMDRV_DMADRV_DMA_CH_COUNT");
+        addDefine(emdrvHaveDmadrv, dmadrvUseNativeApi, "EMDRV_DMADRV_USE_NATIVE_API");
+
+        addDefine(emdrvHaveEzradiodrv, ezradiodrvCommCtsRetry, "EZRADIODRV_COMM_CTS_RETRY");
+        addDefine(emdrvHaveEzradiodrv, ezradiodrvCommUseGpio1ForCts, "EZRADIODRV_COMM_USE_GPIO1_FOR_CTS");
+        addDefine(emdrvHaveEzradiodrv, ezradiodrvDisablePti, "EZRADIODRV_DISABLE_PTI");
+        addDefine(emdrvHaveEzradiodrv, ezradiodrvSpi4WireMode, "EZRADIODRV_SPI_4WIRE_MODE");
+        addDefine(emdrvHaveEzradiodrv && emdrvEzradiodrvFullSupport, "1", "EZRADIO_DRIVER_EXTENDED_SUPPORT");
+        addDefine(emdrvHaveEzradiodrv && emdrvEzradiodrvFullSupport, "1", "EZRADIO_DRIVER_FULL_SUPPORT");
+
+        addDefine(emdrvHaveRtcdrv, rtcdrvNumTimers, "EMDRV_RTCDRV_NUM_TIMERS");
+        addDefine(emdrvHaveRtcdrv, rtcdrvWallclockConfig, "EMDRV_RTCDRV_WALLCLOCK_CONFIG");
+        addDefine(emdrvHaveRtcdrv, rtcdrvSleepdrvIntegration, "EMDRV_RTCDRV_SLEEPDRV_INTEGRATION");
+        addDefine(emdrvHaveRtcdrv, rtcdrvUseLfRco, "EMDRV_RTCDRV_USE_LFRCO");
+
+        addDefine(emdrvHaveSpidrv, spidrvIncludeSlave, "EMDRV_SPIDRV_INCLUDE_SLAVE");
+
+        addDefine(emdrvHaveUartdrv, uartdrvMaxConcurrentRxBufs, "EMDRV_UARTDRV_MAX_CONCURRENT_RX_BUFS");
+        addDefine(emdrvHaveUartdrv, uartdrvMaxConcurrentTxBufs, "EMDRV_UARTDRV_MAX_CONCURRENT_TX_BUFS");
+        addDefine(emdrvHaveUartdrv, uartdrvFlowControlEnable, "EMDRV_UARTDRV_FLOW_CONTROL_ENABLE");
+        addDefine(emdrvHaveUartdrv, uartdrvMaxDriverInstances, "EMDRV_UARTDRV_MAX_DRIVER_INSTANCES");
+        addDefine(emdrvHaveUartdrv, uartdrvFcSwXon, "UARTDRV_FC_SW_XON");
+        addDefine(emdrvHaveUartdrv, uartdrvFcSwXoff, "UARTDRV_FC_SW_XOFF");
+
+        addDefine(emdrvHaveUstimer, ustimerTimer, "USTIMER_TIMER");
 
         return arr;
     }

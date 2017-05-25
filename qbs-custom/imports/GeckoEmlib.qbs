@@ -10,6 +10,8 @@ ArmMcuProduct {
     fpuName: info.fpu
     floatAbi: info.floatAbi
 
+    property variant efmDebugging: undefined
+
     property path emlibLocation: geckoSdkPlatformPath + "/emlib"
     property path emlibIncludePath: emlibLocation + "/inc"
     property pathList emlibFiles: [
@@ -27,12 +29,27 @@ ArmMcuProduct {
         emlibIncludePath
     ]
 
+    property stringList emlibDefines: {
+        var arr = [];
+
+        if (efmDebugging === true) {
+            arr.push("DEBUG_EFM");
+        }
+        else if (efmDebugging === "user") {
+            arr.push("DEBUG_EFM_USER");
+        }
+
+        return arr;
+    }
+
     Export {
         Depends { name: "cpp" }
         Depends { name: "startup" }
         cpp.includePaths: product.emlibIncludePaths
+        cpp.defines: product.emlibDefines
     }
 
     cpp.includePaths: emlibIncludePaths
+    cpp.defines: emlibDefines
 
 }
