@@ -118,8 +118,7 @@ ArmMcuProduct {
             arr.push(emdrvLocation + "/dmadrv/*/*.h");
             arr.push(emdrvLocation + "/dmadrv/src/*.c");
             if (emdrvHaveDmadrvDefaultConfig) {
-                arr.push(emdrvLocation + "/dmadrv/config");
-                arr.push(geckoSdkPlatformPath + "../hardware/kit/common/drivers/dmactrl.*");
+                arr.push(geckoSdkPlatformPath + "/../hardware/kit/common/drivers/dmactrl.*");
             }
         }
         if (emdrvHaveGpiointerrupt) {
