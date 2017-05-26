@@ -22,6 +22,10 @@ Product {
     cpp.positionIndependentCode: false
     cpp.optimization: "none"
     cpp.debugInformation: true
+    cpp.enableExceptions: false
+    cpp.enableRtti: false
+    cpp.enableReproducibleBuilds: true
+    cpp.treatSystemHeadersAsDependencies: true
     
     cpp.staticLibraries: [
         "gcc",
@@ -32,21 +36,23 @@ Product {
     
     cpp.driverFlags: {
         var arr = [
-                    "-nodefaultlibs",
                     "-mcpu=" + cpuName,
+                    "-mfloat-abi=" + floatAbi,
                     "-mthumb",
                     "-mabi=aapcs",
-                    "-mfloat-abi=" + floatAbi,
+                    "-mno-sched-prolog",
+                    "-mabort-on-noreturn",
                     "-fdata-sections",
                     "-ffunction-sections",
                     "-fno-strict-aliasing",
                     "-fno-builtin",
-                    "-fno-exceptions",
                     "-specs=nosys.specs",
                     "-specs=nano.specs",
                     "-static",
-                    "-ggdb",
+                    "-nodefaultlibs",
                     "-Wdouble-promotion",
+                    "-ggdb",
+                    "-g3",
                 ];
 
         if (fpuName && typeof(fpuName) === "string") {
@@ -57,7 +63,6 @@ Product {
     }
 
     cpp.cxxFlags: [
-        "-fno-rtti"
     ]
 
     cpp.linkerFlags: [

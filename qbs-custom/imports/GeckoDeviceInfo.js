@@ -50,7 +50,7 @@ function parse(deviceName) {
     }
 
     var cpu = cpuName(arr[1], arr[2]);
-    var fpu = fpuName(cpuName);
+    var fpu = fpuName(cpu);
     var floatAbi = fpu ? "hard" : "soft";
 
     return {
