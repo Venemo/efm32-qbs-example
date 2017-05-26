@@ -13,12 +13,8 @@ ArmMcuProduct {
 
     property path deviceFilesLocation: geckoSdkPlatformPath + "/Device/SiliconLabs/" + info.productLine + info.deviceFamily
     property path deviceFilesIncludePath: deviceFilesLocation + "/Include"
-    property pathList startupFiles: [
-        deviceFilesLocation + "/Source/system_" + infoShort + ".c",
-        deviceFilesLocation + "/Source/GCC/startup_" + infoShort + ".c",
-        deviceFilesLocation + "/Source/GCC/" + infoShort + ".ld",
-    ]
     property path deviceLinkerScript: deviceFilesLocation + "/Source/GCC/" + infoShort + ".ld"
+
     property stringList deviceDefines: {
         var arr = [deviceName.toUpperCase()];
         if (typeof(deviceHeapSize) !== "undefined") {
@@ -32,10 +28,39 @@ ArmMcuProduct {
         deviceFilesIncludePath,
     ]
 
-    files: startupFiles
+    property pathList startupFiles: [
+        deviceFilesLocation + "/Source/system_" + infoShort + ".c",
+        deviceFilesLocation + "/Source/GCC/startup_" + infoShort + ".c",
+        deviceLinkerScript,
+    ]
+
+    property string deviceNameLowerCase: deviceName.toLowerCase()
+    property string infoShortLowerCase: infoShort.toUpperCase()
+    property string infoShortUpperCase: infoShort.toUpperCase()
+
+    Group {
+        name: product.infoShortUpperCase + " headers"
+        files: {
+            var arr = [];
+            arr.push(product.deviceFilesIncludePath + "/" + product.infoShortLowerCase + "_*.h");
+            arr.push(product.deviceFilesIncludePath + "/" + product.deviceNameLowerCase + "*.h");
+            return arr;
+        }
+    }
+
+    Group {
+        name: product.infoShortUpperCase + " startup files"
+        files: product.startupFiles
+    }
+
+    Group {
+        name: "CMSIS headers"
+        files: [
+            product.cmsisIncludePath + "/*.h"
+        ]
+    }
 
     cpp.includePaths: deviceIncludePaths
-
     cpp.defines: deviceDefines
 
     Export {
